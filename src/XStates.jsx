@@ -7,8 +7,8 @@ function XStates() {
     let [selcountry, setSelcountry] = useState("");
     let [state, setState] = useState([]);
     let [selstate, setSelstate] = useState("")
-    let [city,setCity]=useState([])
-    let [selcity,setSelcity]=useState("")
+    let [city, setCity] = useState([])
+    let [selcity, setSelcity] = useState("")
     useEffect(() => {
         axios.get("https://location-selector.labs.crio.do/countries")
             .then((res) => setCountry(res.data))
@@ -26,7 +26,7 @@ function XStates() {
                 .catch((err) => console.error(err))
         }
     }, [selcountry])
-    useEffect(()=>{
+    useEffect(() => {
         if (selstate.length > 1) {
             axios.get(` https://location-selector.labs.crio.do/country=${selcountry}/state=${selstate}/cities`)
                 .then((res) => {
@@ -37,7 +37,7 @@ function XStates() {
                 .catch((err) => console.error(err))
         }
 
-    },[selstate])
+    }, [selstate])
 
     function selectedcountry(e) {
         setSelcountry(e.target.value)
@@ -61,7 +61,7 @@ function XStates() {
                         </option>
                     ))}
             </select>
-            <select value={selcity} onChange={(e) => setSelcity(e.target.value)} disabled={selstate.length==0}>
+            <select value={selcity} onChange={(e) => setSelcity(e.target.value)} disabled={selstate.length <= 1}>
                 <option value="">Select City</option>
                 {selstate.length > 1 &&
                     city.map((s, i) => (
@@ -70,6 +70,10 @@ function XStates() {
                         </option>
                     ))}
             </select>
+            {selcity && selstate && selcountry && (
+                <h1>You selected {selcity}, {selstate}, {selcountry}</h1>
+            )}
+
 
 
 
